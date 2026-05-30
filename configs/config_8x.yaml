@@ -1,0 +1,70 @@
+seed: 42
+cudnn_benchmark: true
+output_dir: results/8x
+wavelet_weights_path: weights/wavelet_weights_c2.pkl
+
+data:
+  # Configurazione Auto-Split
+  dataset_root: /content/Dataset/img_align_celeba
+  val_split: 0.1                              # Usa il 10% del dataset per la validazione
+  test_split: 0.1                             # Usa il 10% del dataset per il test
+  
+  # Parametri per test rapido (rimuovili per l'addestramento completo)
+  train_max_images: 128
+  val_max_images: 32
+  test_max_images: 32
+
+  # 16x16 -> 128x128. For 8x8 -> 64x64 keep scale=8 and set hr_size=64.
+  # For 8x8 -> 128x128 set scale=16 and use a config_16x.yaml variant.
+  hr_size: 128
+  scale: 8
+
+  # Paper-like preprocessing can be approximated by resize_before_crop: 134 and crop_size: 128.
+  resize_before_crop: null
+  crop_size: 128
+
+model:
+  image_channels: 3
+  wavelet_levels: 3       # automatically inferred from data.scale in train.py/test.py
+  embedding_channels: [64, 128, 256, 512, 1024]
+  num_embedding_blocks: 2
+  wavelet_channels: 32
+  num_branch_blocks: 1
+
+loss:
+  image_channels: 3
+  lambda_low: 0.01
+  lambda_high: 1.0
+  texture_weight: 1.0
+  image_weight: 0.1
+  texture_alpha: 1.2
+  texture_margin: 0.0
+  reduction: mean
+
+train:
+  epochs: 1
+  batch_size: 64
+  val_batch_size: 32
+  num_workers: 4
+  lr: 0.0002
+  betas: [0.9, 0.999]
+  weight_decay: 0.0005
+  amp: true
+  grad_clip_norm: null
+  data_parallel: false
+  log_every: 1
+  val_every: 1
+  save_every: 1
+  max_val_batches: null
+
+test:
+  batch_size: 32
+  num_workers: 4
+
+metrics:
+  lpips:
+    enabled: true
+    net: vgg                # opzioni comuni: alex, vgg — coerente con VGG perceptual loss
+  arcface:
+    enabled: false
+    backbone: weights/arcface_backbone.pth

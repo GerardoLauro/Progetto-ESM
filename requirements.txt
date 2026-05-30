@@ -1,0 +1,23 @@
+# Core dependencies
+numpy
+pillow
+pyyaml
+tqdm
+matplotlib
+
+# LPIPS (perceptual metric)
+lpips
+
+# Optional identity/face backbones (choose one if needed)
+insightface
+facenet-pytorch
+
+# NOTE: Install PyTorch separately to match your CUDA/cpu setup.
+# GPU example (CUDA 11.8):
+# pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+# CPU example:
+# pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+
+# Optional utilities
+opencv-python
+# If you don't want insightface/facenet, remove them from this file

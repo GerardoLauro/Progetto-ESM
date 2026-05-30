@@ -1,0 +1,18 @@
+# Ambienti virtuali
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# PyTorch e pesi del modello
+*.pth
+*.pt
+*.ckpt
+*.pkl
+
+# Cartelle di output e dati
+results/
+samples/
